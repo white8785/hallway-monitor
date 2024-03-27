@@ -13,8 +13,8 @@ templates = Jinja2Templates(directory="templates")
 
 color = "green"
 
-@app.post("/color")
-async def update_color(new_color: str = Form(...)):
+@app.get("/color")
+async def update_color(new_color: str = "green"):
     global color
     color = new_color
     return {"color": color}
