@@ -15,13 +15,16 @@
   become: false
   notify: Restart Hallway Display
 
-# - name: Build Hallway Display Docker image
-#   community.docker.docker_image:
-#     name: hallway-display-app
-#     source: build
-#     build:
-#       dockerfile: Dockerfile
-#       path: "{{ config_dir }}/w/hallway-display/"
+- name: Set docker_host based on OS
+  set_fact:
+    docker_host: "{% if ansible_facts['os_family'] == 'Darwin' %}unix:///var/run/docker.sock{% else %}unix:///var/run/docker.sock{% endif %}"
+
+# TODO - update the pathing
+- name: Build Hallway Display Docker image
+  community.docker.docker_image_build:
+    name: hallway-display-app
+    dockerfile: Dockerfile
+    path: "{{ config_dir }}/w/hallway-display/"
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
@@ -29,5 +32,5 @@
   community.docker.docker_compose_v2:
     project_src: "{{ hallway_display_dir.path }}/"
     build: always
-    docker_host: "unix:///var/run/docker.sock"
+    docker_host: "{{ docker_host }}"
   become: false
