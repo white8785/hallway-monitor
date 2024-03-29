@@ -1,0 +1,7 @@
+---
+- name: Restart Hallway Display
+  community.docker.docker_compose_v2:
+    project_src: "{{ config_dir }}/hallway-display/"
+    build: never
+    state: restarted
+  become: false

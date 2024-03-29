@@ -1,0 +1,23 @@
+---
+- name: Configure Hallway Display.
+  hosts: hallway_display
+  # become: true
+
+  pre_tasks:
+    - name: Load configuration (with defaults from example file).
+      ansible.builtin.include_vars: "{{ item }}"
+      loop:
+        - example.config.yml
+        - config.yml
+
+  handlers:
+    - name: Include handlers.
+      ansible.builtin.import_tasks: ansible_tasks/handlers.yml
+
+  tasks:
+    # - name: Setup Docker.
+    #   ansible.builtin.import_tasks: ansible_tasks/docker.yml
+
+    - name: Set up Hallway Display.
+      ansible.builtin.import_tasks: ansible_tasks/hallway-display.yml
+      when: hallway_display_enable

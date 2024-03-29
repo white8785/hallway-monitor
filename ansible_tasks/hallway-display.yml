@@ -1,0 +1,33 @@
+---
+- name: Create Hallway Display folder on Pi.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/hallway-display"
+    state: directory
+    mode: 0755
+  become: false
+  register: hallway_display_dir
+
+- name: Copy Hallway Display docker-compose template to Pi.
+  ansible.builtin.template:
+    src: ansible_templates/hallway-display-docker-compose.yml.j2
+    dest: "{{ hallway_display_dir.path }}/docker-compose.yml"
+    mode: '0640'
+  become: false
+  notify: Restart Hallway Display
+
+# - name: Build Hallway Display Docker image
+#   community.docker.docker_image:
+#     name: hallway-display-app
+#     source: build
+#     build:
+#       dockerfile: Dockerfile
+#       path: "{{ config_dir }}/w/hallway-display/"
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: Ensure Hallway Display is running.
+  community.docker.docker_compose_v2:
+    project_src: "{{ hallway_display_dir.path }}/"
+    build: always
+    docker_host: "unix:///var/run/docker.sock"
+  become: false
