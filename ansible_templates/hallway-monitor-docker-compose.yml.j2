@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+---
+services:
+  hallwaymonitor:
+    container_name: hallwaymonitor
+    image: hallway-monitor-app
+    restart: unless-stopped
+    hostname: '{{ hallwaymonitor_hostname }}'
+    ports:
+      - "8000:8000/tcp"

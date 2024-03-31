@@ -1,5 +1,5 @@
-# docker build -t hallway-display-app .
-# docker run -p 8000:8000 hallway-display-app
+# docker build -t hallway-monitor-app .
+# docker run -p 8000:8000 hallway-monitor-app
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim-buster
 

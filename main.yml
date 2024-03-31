@@ -1,6 +1,6 @@
 ---
-- name: Configure Hallway Display.
-  hosts: hallway_display
+- name: Configure Hallway Monitor.
+  hosts: hallway_monitor
   # become: true
 
   pre_tasks:
@@ -18,6 +18,6 @@
     # - name: Setup Docker.
     #   ansible.builtin.import_tasks: ansible_tasks/docker.yml
 
-    - name: Set up Hallway Display.
-      ansible.builtin.import_tasks: ansible_tasks/hallway-display.yml
-      when: hallway_display_enable
+    - name: Set up Hallway Monitor.
+      ansible.builtin.import_tasks: ansible_tasks/hallway-monitor.yml
+      when: hallway_monitor_enable

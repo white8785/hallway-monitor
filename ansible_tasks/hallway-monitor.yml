@@ -1,19 +1,19 @@
 ---
 - name: Create Hallway Display folder on Pi.
   ansible.builtin.file:
-    path: "{{ config_dir }}/hallway-display"
+    path: "{{ config_dir }}/hallway-monitor"
     state: directory
     mode: 0755
   become: false
-  register: hallway_display_dir
+  register: hallway_monitor_dir
 
 - name: Copy Hallway Display docker-compose template to Pi.
   ansible.builtin.template:
-    src: ansible_templates/hallway-display-docker-compose.yml.j2
-    dest: "{{ hallway_display_dir.path }}/docker-compose.yml"
+    src: ansible_templates/hallway-monitor-docker-compose.yml.j2
+    dest: "{{ hallway_monitor_dir.path }}/docker-compose.yml"
     mode: '0640'
   become: false
-  notify: Restart Hallway Display
+  notify: Restart Hallway Monitor
 
 - name: Set docker_host based on OS
   set_fact:
@@ -22,15 +22,15 @@
 # TODO - update the pathing
 - name: Build Hallway Display Docker image
   community.docker.docker_image_build:
-    name: hallway-display-app
+    name: hallway-monitor-app
     dockerfile: Dockerfile
-    path: "{{ config_dir }}/w/hallway-display/"
+    path: "{{ config_dir }}/w/hallway-monitor/"
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
 - name: Ensure Hallway Display is running.
   community.docker.docker_compose_v2:
-    project_src: "{{ hallway_display_dir.path }}/"
+    project_src: "{{ hallway_monitor_dir.path }}/"
     build: always
     docker_host: "{{ docker_host }}"
   become: false

@@ -2,5 +2,5 @@
 # Location where configuration files will be stored.
 config_dir: '~'
 
-hallway_display_enable: true
-hallwaydisplay_hostname: 'hallway-display'
+hallway_monitor_enable: true
+hallwaymonitor_hostname: 'hallway-monitor'
