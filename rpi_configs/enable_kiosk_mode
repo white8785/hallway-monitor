@@ -1,3 +1,21 @@
+sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
+pip install ansible
+
+~/.local/bin/ansible collection install -r requirements.yml
+
+
+ansible-playbook main.yml --become-method community.general.sudosu
+
+
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+docker volume prune
+
+
+
+
 Create this file:
 /lib/systemd/system/kiosk.service
 
