@@ -16,7 +16,6 @@ docker volume prune
 
 
 
-
 Create this file:
 /lib/systemd/system/kiosk.service
 
